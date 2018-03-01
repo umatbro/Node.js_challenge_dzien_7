@@ -1,13 +1,14 @@
+const path = require('path');
 const fs =  require('fs');
-
-const DB_PATH = './app/data/todos.json'
 
 let TODO =  function (title='', done=false) {
     this.title = title;
     this.done = done;
 };
 
-TODO.prototype.addToDbFile = function (dbPath=DB_PATH) {
+TODO.DB_PATH = path.join(__dirname, 'app', 'data', 'todos.json');
+
+TODO.prototype.addToDbFile = function (dbPath=TODO.DB_PATH) {
     if (!fs.existsSync(dbPath)) {
         fs.writeFileSync(dbPath, JSON.stringify([]), 'utf8');
     }
@@ -31,9 +32,11 @@ TODO.prototype.addToDbFile = function (dbPath=DB_PATH) {
  *
  * @param dbPath
  */
-TODO.getAllFromDb = function(dbPath=DB_PATH) {
+TODO.getAllFromDb = function(dbPath=TODO.DB_PATH) {
     return JSON.parse(fs.readFileSync(dbPath, 'utf8'));
 };
 
+let x = new TODO('dupencja');
+x.addToDbFile();
 
 module.exports = TODO;
